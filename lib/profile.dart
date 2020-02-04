@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:parking_reservation_system/Account.dart';
@@ -7,6 +6,7 @@ import 'package:parking_reservation_system/AccountReservation.dart';
 import 'package:parking_reservation_system/Vehicle.dart';
 import 'package:parking_reservation_system/reservation.dart';
 import 'package:parking_reservation_system/slot_selection.dart';
+import 'package:parking_reservation_system/update_password.dart';
 import 'package:parking_reservation_system/vehicle_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -283,9 +283,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (int i) {
-              logout();
+              if (i == 0) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UpdatePassword()));
+              } else {
+                logout();
+              }
             },
             itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 0,
+                child: Text("Settings"),
+              ),
               PopupMenuItem(
                 value: 1,
                 child: Text("Logout"),

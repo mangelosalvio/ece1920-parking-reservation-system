@@ -59,6 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
   String idNo;
   String password;
 
+  FocusNode idNumberInput = FocusNode();
+  FocusNode passwordInput = FocusNode();
+
+  TextEditingController idNumberFieldController = TextEditingController();
+  TextEditingController passwordFieldController = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -109,20 +115,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final idNumberFieldController = TextEditingController();
-    final passwordFieldController = TextEditingController();
+    final idNumberField = TextFormField(
+        autofocus: true,
+        focusNode: idNumberInput,
+        textInputAction: TextInputAction.next,
+        controller: idNumberFieldController,
+        obscureText: false,
+        onFieldSubmitted: (term) {
+          idNumberInput.unfocus();
+          FocusScope.of(context).requestFocus(passwordInput);
+        },
+        decoration: InputDecoration(
+            labelText: "Student/Employee No.", icon: Icon(Icons.face)));
 
-    final idNumberField = TextField(
-      textInputAction: TextInputAction.next,
-      controller: idNumberFieldController,
-      obscureText: false,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(20.0),
-          hintText: "Student/Employee No.",
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0))),
+    final passwordField = TextFormField(
+      focusNode: passwordInput,
+      textInputAction: TextInputAction.done,
+      onFieldSubmitted: (term) {
+        login(
+            idNo: idNumberFieldController.text,
+            password: passwordFieldController.text);
+      },
+      obscureText: true,
+      controller: passwordFieldController,
+      decoration:
+          InputDecoration(labelText: "Password", icon: Icon(Icons.vpn_key)),
     );
 
-    final passwordField = TextField(
+    /*final passwordField = TextField(
       textInputAction: TextInputAction.done,
       obscureText: true,
       controller: passwordFieldController,
@@ -130,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
           contentPadding: EdgeInsets.all(20.0),
           hintText: "Password",
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0))),
-    );
+    );*/
 
     final loginButton = Material(
       elevation: 5.0,
@@ -180,23 +200,25 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.all(36.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  idNumberField,
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  passwordField,
-                  SizedBox(
-                    height: 32.0,
-                  ),
-                  loginButton
-                ],
+          child: SingleChildScrollView(
+            child: Container(
+              child: Padding(
+                padding: EdgeInsets.all(36.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    idNumberField,
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    passwordField,
+                    SizedBox(
+                      height: 32.0,
+                    ),
+                    loginButton
+                  ],
+                ),
               ),
             ),
           ),
