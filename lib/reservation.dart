@@ -48,7 +48,8 @@ class _ReservationScreen extends State<ReservationScreen> {
                 child: Text("Cancel Reservation"),
                 onPressed: () {
                   cancelReservation(context);
-                  Navigator.of(context).pop("test a");
+                  //Navigator.of(context).pop();
+                  //Navigator.pop(context, true);
                 },
               )
             ],
@@ -67,6 +68,7 @@ class _ReservationScreen extends State<ReservationScreen> {
         host + '/reservations/cancel-reservation/id_no',
         body: {"id_no": idNo});
     if (response.statusCode == 200) {
+      Navigator.of(context).pop();
       Navigator.pop(context, true);
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
